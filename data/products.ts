@@ -1,0 +1,327 @@
+export interface Product {
+  id: string;
+  name: string;
+  collection: "mythology" | "gothic" | "culture";
+  category: string;
+  material: string;
+  materialDetail: string;
+  price: number;
+  originalPrice?: number;
+  image: string;
+  hoverImage?: string;
+  tag?: "New" | "Bestseller" | "Limited" | "Sale";
+  description: string;
+  isFeatured?: boolean;
+}
+
+export interface Collection {
+  id: "mythology" | "gothic" | "culture";
+  name: string;
+  tagline: string;
+  description: string;
+  banner: string;
+  theme: "light" | "dark";
+  accentColor: string;
+}
+
+// ─── PRODUCT DATA ──────────────────────────────────────────────
+export const products: Product[] = [
+  // ---- MYTHOLOGY ----
+  {
+    id: "myth-001",
+    name: "Medusa Signet",
+    collection: "mythology",
+    category: "Rings",
+    material: "Sterling Silver",
+    materialDetail: "925 Silver",
+    price: 12900,
+    image: "/assets/products/medusa_ring.jpg",
+    hoverImage: "/assets/products/medusa_ring.jpg",
+    tag: "Bestseller",
+    description: "Hand-cast in 925 silver, the Medusa Signet bears the Gorgon's gaze in meticulous bas-relief. A piece for those who turn heads.",
+    isFeatured: true,
+  },
+  {
+    id: "myth-002",
+    name: "Helios Signet",
+    collection: "mythology",
+    category: "Rings",
+    material: "18K Gold",
+    materialDetail: "18K Gold",
+    price: 42000,
+    image: "/assets/products/helios_signet.jpg",
+    hoverImage: "/assets/products/helios_signet.jpg",
+    tag: "New",
+    description: "Forged in 18K gold, Helios — the sun god — gazes outward from a heavyweight octagonal signet. Statement without a word.",
+    isFeatured: true,
+  },
+  {
+    id: "myth-003",
+    name: "Athena Medallion",
+    collection: "mythology",
+    category: "Necklaces",
+    material: "18K Gold",
+    materialDetail: "18K Gold",
+    price: 38500,
+    image: "/assets/products/athena_pendant.jpg",
+    hoverImage: "/assets/products/athena_pendant.jpg",
+    tag: "Limited",
+    description: "The goddess of wisdom, rendered in exquisite relief on a coin pendant. Antique finish, modern edge.",
+    isFeatured: false,
+  },
+  {
+    id: "myth-004",
+    name: "Titan Chain",
+    collection: "mythology",
+    category: "Bracelets",
+    material: "18K Gold",
+    materialDetail: "18K Gold",
+    price: 54000,
+    image: "/assets/products/titan_bracelet.jpg",
+    hoverImage: "/assets/products/titan_bracelet.jpg",
+    tag: "New",
+    description: "Thick interlocking links inspired by ancient armor. Worn by those who move through the world with weight.",
+    isFeatured: true,
+  },
+  {
+    id: "myth-005",
+    name: "Ouroboros Band",
+    collection: "mythology",
+    category: "Rings",
+    material: "Sterling Silver",
+    materialDetail: "925 Silver",
+    price: 9800,
+    image: "/assets/products/medusa_ring.jpg",
+    hoverImage: "/assets/products/medusa_ring.jpg",
+    description: "The serpent that devours itself. A symbol of eternity — recast as a sculptural band in oxidized silver.",
+    isFeatured: false,
+  },
+  {
+    id: "myth-006",
+    name: "Scion Pendant",
+    collection: "mythology",
+    category: "Necklaces",
+    material: "18K Gold",
+    materialDetail: "18K Gold",
+    price: 31000,
+    originalPrice: 36000,
+    image: "/assets/products/athena_pendant.jpg",
+    hoverImage: "/assets/products/athena_pendant.jpg",
+    tag: "Sale",
+    description: "A sunburst pendant honoring the lineage of gods. Cast in 18K gold with an antiqued centre.",
+    isFeatured: false,
+  },
+
+  // ---- GOTHIC ----
+  {
+    id: "goth-001",
+    name: "Void Cross",
+    collection: "gothic",
+    category: "Necklaces",
+    material: "Sterling Silver",
+    materialDetail: "925 Silver + Onyx",
+    price: 14500,
+    image: "/assets/products/void_pendant.jpg",
+    hoverImage: "/assets/products/void_pendant.jpg",
+    tag: "Bestseller",
+    description: "An ornate Victorian cross set with genuine black onyx at its heart. Heavy, deliberate, uncompromising.",
+    isFeatured: true,
+  },
+  {
+    id: "goth-002",
+    name: "Shade Ring",
+    collection: "gothic",
+    category: "Rings",
+    material: "Sterling Silver",
+    materialDetail: "925 Oxidized Silver",
+    price: 8900,
+    image: "/assets/products/shade_ring.jpg",
+    hoverImage: "/assets/products/shade_ring.jpg",
+    tag: "New",
+    description: "A wide band wrapped in thorns and roses — the dark romantic's sigil. Oxidized for a deep, lived-in finish.",
+    isFeatured: true,
+  },
+  {
+    id: "goth-003",
+    name: "Memento Chain",
+    collection: "gothic",
+    category: "Necklaces",
+    material: "Sterling Silver",
+    materialDetail: "925 Silver",
+    price: 16800,
+    image: "/assets/products/serpent_chain.jpg",
+    hoverImage: "/assets/products/serpent_chain.jpg",
+    description: "A heavy skull-charm chain in oxidized silver. Memento mori — remember what matters.",
+    isFeatured: false,
+  },
+  {
+    id: "goth-004",
+    name: "Coven Earrings",
+    collection: "gothic",
+    category: "Earrings",
+    material: "Sterling Silver",
+    materialDetail: "925 Silver + Garnet",
+    price: 7200,
+    image: "/assets/products/void_pendant.jpg",
+    hoverImage: "/assets/products/void_pendant.jpg",
+    tag: "New",
+    description: "Drop earrings with gothic arch framing and deep garnet drops. Equal parts dark and divine.",
+    isFeatured: false,
+  },
+  {
+    id: "goth-005",
+    name: "Raven Ring",
+    collection: "gothic",
+    category: "Rings",
+    material: "Sterling Silver",
+    materialDetail: "925 Oxidized Silver",
+    price: 11200,
+    image: "/assets/products/shade_ring.jpg",
+    hoverImage: "/assets/products/shade_ring.jpg",
+    tag: "Limited",
+    description: "A sculptural raven perches atop this wide band. Symbol of transformation, rendered in fine oxidized silver.",
+    isFeatured: false,
+  },
+  {
+    id: "goth-006",
+    name: "Thorn Cuff",
+    collection: "gothic",
+    category: "Bracelets",
+    material: "Sterling Silver",
+    materialDetail: "925 Silver",
+    price: 18500,
+    originalPrice: 22000,
+    image: "/assets/products/serpent_chain.jpg",
+    hoverImage: "/assets/products/serpent_chain.jpg",
+    tag: "Sale",
+    description: "A solid open cuff etched with bramble patterns. Architectural weight, gothic soul.",
+    isFeatured: false,
+  },
+
+  // ---- CULTURE ----
+  {
+    id: "cult-001",
+    name: "Stellar Drop",
+    collection: "culture",
+    category: "Earrings",
+    material: "Sterling Silver",
+    materialDetail: "925 Silver",
+    price: 6900,
+    image: "/assets/products/star_earrings.jpg",
+    hoverImage: "/assets/products/star_earrings.jpg",
+    tag: "Bestseller",
+    description: "Bold puffed star drops in high-polish silver. A piece for the ones who take up space.",
+    isFeatured: true,
+  },
+  {
+    id: "cult-002",
+    name: "Icon Signet",
+    collection: "culture",
+    category: "Rings",
+    material: "Sterling Silver",
+    materialDetail: "925 Silver",
+    price: 10500,
+    image: "/assets/products/medusa_ring.jpg",
+    hoverImage: "/assets/products/medusa_ring.jpg",
+    tag: "New",
+    description: "A clean modern signet ring — blank canvas or custom-engrave your own icon. Your identity, in silver.",
+    isFeatured: true,
+  },
+  {
+    id: "cult-003",
+    name: "Scene Chain",
+    collection: "culture",
+    category: "Necklaces",
+    material: "Sterling Silver",
+    materialDetail: "925 Silver",
+    price: 13200,
+    image: "/assets/products/serpent_chain.jpg",
+    hoverImage: "/assets/products/serpent_chain.jpg",
+    description: "A layered film-reel chain worn by those who live in reference. Street meets precious metal.",
+    isFeatured: false,
+  },
+  {
+    id: "cult-004",
+    name: "Orbit Bracelet",
+    collection: "culture",
+    category: "Bracelets",
+    material: "Sterling Silver",
+    materialDetail: "925 Silver",
+    price: 11800,
+    image: "/assets/products/titan_bracelet.jpg",
+    hoverImage: "/assets/products/titan_bracelet.jpg",
+    tag: "New",
+    description: "Satellite-link bracelet. Modern tech aesthetic meets real silver. For the digital natives.",
+    isFeatured: false,
+  },
+  {
+    id: "cult-005",
+    name: "Echo Pendant",
+    collection: "culture",
+    category: "Necklaces",
+    material: "18K Gold",
+    materialDetail: "18K Gold",
+    price: 28000,
+    image: "/assets/products/athena_pendant.jpg",
+    hoverImage: "/assets/products/athena_pendant.jpg",
+    tag: "Limited",
+    description: "An abstract sound-wave pendant in 18K gold. Your favourite song, frozen in precious metal.",
+    isFeatured: true,
+  },
+  {
+    id: "cult-006",
+    name: "Frame Earrings",
+    collection: "culture",
+    category: "Earrings",
+    material: "Sterling Silver",
+    materialDetail: "925 Silver",
+    price: 5900,
+    originalPrice: 7200,
+    image: "/assets/products/star_earrings.jpg",
+    hoverImage: "/assets/products/star_earrings.jpg",
+    tag: "Sale",
+    description: "Architectural rectangle drop earrings — minimalist, deliberate, precise.",
+    isFeatured: false,
+  },
+];
+
+export const collections: Collection[] = [
+  {
+    id: "mythology",
+    name: "MYTHOLOGY",
+    tagline: "Legends, forged again.",
+    description:
+      "From the archives of gods and monsters — a collection built on ancient power. Gold and silver transformed into relics of myth, worn in the modern age.",
+    banner: "/assets/collections/mythology/banner.jpg",
+    theme: "light",
+    accentColor: "#C9A84C",
+  },
+  {
+    id: "gothic",
+    name: "GOTHIC",
+    tagline: "For those who find beauty in the dark.",
+    description:
+      "Where shadows have structure and darkness has craft. Premium sterling silver shaped by gothic architecture, dark romanticism, and the beauty of the unknown.",
+    banner: "/assets/collections/gothic/banner.jpg",
+    theme: "dark",
+    accentColor: "#9BA3B0",
+  },
+  {
+    id: "culture",
+    name: "CULTURE",
+    tagline: "From the screen to the street.",
+    description:
+      "Jewelry born from the cultural moments that define us — cinema, music, internet aesthetics, and the icons that live rent-free in our heads.",
+    banner: "/assets/collections/culture/banner.jpg",
+    theme: "light",
+    accentColor: "#C9A84C",
+  },
+];
+
+export const featuredProducts = products.filter((p) => p.isFeatured);
+
+export const getProductsByCollection = (collectionId: string) =>
+  products.filter((p) => p.collection === collectionId);
+
+export const formatPrice = (price: number): string =>
+  `₹${price.toLocaleString("en-IN")}`;
