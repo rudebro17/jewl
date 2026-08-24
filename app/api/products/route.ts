@@ -1,41 +1,49 @@
 import { NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
-import { products } from "../../../data/products";
+import { db } from "../../../lib/firebase";
+import { collection, getDocs, doc, writeBatch } from "firebase/firestore";
+import type { Product } from "../../../data/products";
 
-const dataFilePath = path.join(process.cwd(), "data", "products.ts");
-
+// GET all products from Firestore
 export async function GET() {
-  return NextResponse.json(products);
+  try {
+    const querySnapshot = await getDocs(collection(db, "products"));
+    const products: Product[] = [];
+    querySnapshot.forEach((doc) => {
+      products.push({ id: doc.id, ...doc.data() } as Product);
+    });
+    return NextResponse.json(products);
+  } catch (error: any) {
+    console.error("GET Error:", error);
+    return NextResponse.json({ success: false, message: error.message }, { status: 500 });
+  }
 }
 
+// POST replaces the entire collection (simplified logic mirroring the previous local array replace)
 export async function POST(req: Request) {
   try {
-    const newProducts = await req.json();
+    const newProducts: Product[] = await req.json();
     
-    // Read the current file content
-    const fileContent = fs.readFileSync(dataFilePath, "utf-8");
-    
-    // Convert the incoming products to a formatted string
-    const newProductsString = JSON.stringify(newProducts, null, 2)
-      // Clean up stringified quotes around object keys to keep it valid TS
-      .replace(/"([^"]+)":/g, "$1:");
+    // Using a batch to write multiple documents
+    const batch = writeBatch(db);
 
-    // Find the export block and replace it
-    // The block is from `export const products: Product[] = [` up to `];`
-    const regex = /export const products: Product\[\] = \[[\s\S]*?\];/;
-    const replacement = `export const products: Product[] = ${newProductsString};`;
+    // Get all current products to delete the ones that are no longer there
+    const querySnapshot = await getDocs(collection(db, "products"));
     
-    if (!regex.test(fileContent)) {
-      throw new Error("Could not find products array in data file.");
-    }
+    // Delete all current documents first
+    querySnapshot.forEach((document) => {
+      batch.delete(document.ref);
+    });
+
+    // Add all the new ones
+    newProducts.forEach((product) => {
+      const docRef = doc(db, "products", product.id);
+      batch.set(docRef, product);
+    });
+
+    // Commit the batch
+    await batch.commit();
     
-    const newFileContent = fileContent.replace(regex, replacement);
-    
-    // Write back to file
-    fs.writeFileSync(dataFilePath, newFileContent, "utf-8");
-    
-    return NextResponse.json({ success: true, message: "Products updated successfully" });
+    return NextResponse.json({ success: true, message: "Products updated in Firestore successfully" });
   } catch (error: any) {
     console.error("API Error:", error);
     return NextResponse.json({ success: false, message: error.message }, { status: 500 });

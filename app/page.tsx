@@ -709,9 +709,9 @@ function CollectionsOverview() {
 // ═══════════════════════════════════════════════════════════════
 // MYTHOLOGY SECTION
 // ═══════════════════════════════════════════════════════════════
-function MythologySection({ onAddToCart }: { onAddToCart: (p: Product) => void }) {
+function MythologySection({ onAddToCart, allProducts }: { onAddToCart: (p: Product) => void, allProducts: Product[] }) {
   const col = collections[0];
-  const prods = getProductsByCollection("mythology");
+  const prods = allProducts.filter(p => p.collection === "mythology");
 
   return (
     <section id="mythology" style={{ background: "var(--color-ivory)", overflow: "hidden" }} className="section-pad">
@@ -777,9 +777,9 @@ function MythologySection({ onAddToCart }: { onAddToCart: (p: Product) => void }
 // ═══════════════════════════════════════════════════════════════
 // GOTHIC SECTION
 // ═══════════════════════════════════════════════════════════════
-function GothicSection({ onAddToCart }: { onAddToCart: (p: Product) => void }) {
+function GothicSection({ onAddToCart, allProducts }: { onAddToCart: (p: Product) => void, allProducts: Product[] }) {
   const col = collections[1];
-  const prods = getProductsByCollection("gothic");
+  const prods = allProducts.filter(p => p.collection === "gothic");
 
   return (
     <section id="gothic" style={{ background: "var(--color-gothic-bg)", overflow: "hidden" }} className="section-pad">
@@ -867,9 +867,9 @@ function GothicSection({ onAddToCart }: { onAddToCart: (p: Product) => void }) {
 // ═══════════════════════════════════════════════════════════════
 // CULTURE SECTION
 // ═══════════════════════════════════════════════════════════════
-function CultureSection({ onAddToCart }: { onAddToCart: (p: Product) => void }) {
+function CultureSection({ onAddToCart, allProducts }: { onAddToCart: (p: Product) => void, allProducts: Product[] }) {
   const col = collections[2];
-  const prods = getProductsByCollection("culture");
+  const prods = allProducts.filter(p => p.collection === "culture");
 
   return (
     <section id="culture" style={{ background: "var(--color-cream)", overflow: "hidden" }} className="section-pad">
@@ -935,7 +935,9 @@ function CultureSection({ onAddToCart }: { onAddToCart: (p: Product) => void }) 
 // ═══════════════════════════════════════════════════════════════
 // FEATURED PRODUCTS
 // ═══════════════════════════════════════════════════════════════
-function FeaturedProducts({ onAddToCart }: { onAddToCart: (p: Product) => void }) {
+function FeaturedProducts({ onAddToCart, allProducts }: { onAddToCart: (p: Product) => void, allProducts: Product[] }) {
+  const featured = allProducts.filter(p => p.isFeatured);
+  
   return (
     <section id="featured" style={{ background: "var(--color-ivory)", overflow: "hidden" }} className="section-pad">
       <div className="container-editorial">
@@ -954,7 +956,7 @@ function FeaturedProducts({ onAddToCart }: { onAddToCart: (p: Product) => void }
         </div>
 
         <div style={{ display: "grid", gap: "1.5rem" }} className="featured-grid">
-          {featuredProducts.slice(0, 6).map((product, i) => (
+          {featured.slice(0, 6).map((product, i) => (
             <div
               key={product.id}
               className={`reveal ${i === 0 ? "featured-hero" : ""}`}
@@ -1330,8 +1332,24 @@ function Footer() {
 export default function HomePage() {
   useScrollReveal();
 
+  const [productsData, setProductsData] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/products")
+      .then(res => res.json())
+      .then(data => {
+        setProductsData(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error("Failed to load products", err);
+        setProductsData(products); // fallback to local
+        setLoading(false);
+      });
+  }, []);
 
   const addToCart = useCallback((product: Product) => {
     setCart((prev) => {
@@ -1345,6 +1363,10 @@ export default function HomePage() {
   const removeFromCart = useCallback((id: string) => setCart((prev) => prev.filter((i) => i.id !== id)), []);
   const cartCount = cart.reduce((s, i) => s + i.qty, 0);
 
+  if (loading) {
+    return <div style={{ height: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--color-ivory)", fontFamily: "var(--font-sans)" }}>Loading Freyora Jewel...</div>;
+  }
+
   return (
     <main>
       <Navbar cartCount={cartCount} onCartClick={() => setCartOpen(true)} />
@@ -1352,10 +1374,10 @@ export default function HomePage() {
       <Hero />
       <BrandPhilosophy />
       <CollectionsOverview />
-      <MythologySection onAddToCart={addToCart} />
-      <GothicSection onAddToCart={addToCart} />
-      <CultureSection onAddToCart={addToCart} />
-      <FeaturedProducts onAddToCart={addToCart} />
+      <MythologySection onAddToCart={addToCart} allProducts={productsData} />
+      <GothicSection onAddToCart={addToCart} allProducts={productsData} />
+      <CultureSection onAddToCart={addToCart} allProducts={productsData} />
+      <FeaturedProducts onAddToCart={addToCart} allProducts={productsData} />
       <BrandStatement />
       <Contact />
       <Footer />
