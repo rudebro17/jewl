@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "JEWL — Jewelry for the New Era",
+  title: "Freyora Jewel — Jewelry for the New Era",
   description:
     "Real gold and real silver jewelry designed for a new generation. Mythology, Gothic, and Culture collections. Precious metals for those who wear their stories.",
   keywords: [
@@ -14,10 +14,10 @@ export const metadata: Metadata = {
     "premium jewelry India",
     "925 silver",
     "18K gold",
-    "JEWL",
+    "freyorajewel",
   ],
   openGraph: {
-    title: "JEWL — Jewelry for the New Era",
+    title: "Freyora Jewel — Jewelry for the New Era",
     description:
       "Real gold and silver jewelry inspired by mythology, gothic culture, and modern identity.",
     type: "website",

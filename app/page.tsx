@@ -91,9 +91,9 @@ function Navbar({ cartCount, onCartClick }: { cartCount: number; onCartClick: ()
             }}
             onMouseEnter={(e) => ((e.target as HTMLElement).style.color = "var(--color-gold)")}
             onMouseLeave={(e) => ((e.target as HTMLElement).style.color = "var(--color-ink)")}
-            aria-label="JEWL Home"
+            aria-label="Freyora Jewel Home"
           >
-            JEWL
+            freyorajewel
           </button>
 
           {/* Desktop links */}
@@ -185,7 +185,7 @@ function Navbar({ cartCount, onCartClick }: { cartCount: number; onCartClick: ()
           <a href="https://instagram.com" aria-label="Instagram" style={{ color: "var(--color-ink-muted)", transition: "color 300ms" }}>
             <Camera size={20} strokeWidth={1.5} />
           </a>
-          <a href="mailto:hello@jewl.in" aria-label="Email" style={{ color: "var(--color-ink-muted)", transition: "color 300ms" }}>
+          <a href="mailto:tejasvsoni6011@gmail.com" aria-label="Email" style={{ color: "var(--color-ink-muted)", transition: "color 300ms" }}>
             <Mail size={20} strokeWidth={1.5} />
           </a>
         </div>
@@ -377,7 +377,7 @@ function Hero() {
             <div style={{ position: "relative", width: "100%", aspectRatio: "3/4", overflow: "hidden" }} className="hero-img-wrap">
               <Image
                 src="/assets/hero/hero_main.jpg"
-                alt="JEWL — Jewelry for the New Era"
+                alt="Freyora Jewel — Jewelry for the New Era"
                 fill priority
                 style={{ objectFit: "cover", objectPosition: "center" }}
               />
@@ -440,7 +440,7 @@ function BrandPhilosophy() {
           <div className="reveal philosophy-img" style={{ position: "relative", aspectRatio: "4/5", overflow: "hidden" }}>
             <Image
               src="/assets/brand/philosophy.jpg"
-              alt="JEWL — Real gold, real stories"
+              alt="Freyora Jewel — Real gold, real stories"
               fill style={{ objectFit: "cover" }}
             />
             <div style={{
@@ -738,7 +738,7 @@ function MythologySection({ onAddToCart }: { onAddToCart: (p: Product) => void }
 
       {/* Banner */}
       <div className="reveal" style={{ position: "relative", height: "min(50vw, 70vh)", minHeight: "260px", marginBottom: "4rem", transitionDelay: "0.1s" }}>
-        <Image src={col.banner} alt="Mythology Collection — JEWL" fill style={{ objectFit: "cover", objectPosition: "center" }} />
+        <Image src={col.banner} alt="Mythology Collection — Freyora Jewel" fill style={{ objectFit: "cover", objectPosition: "center" }} />
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(250,247,242,0.5) 0%, transparent 60%)" }} />
         <div style={{ position: "absolute", bottom: "2rem", left: "clamp(2rem, 4vw, 4rem)" }}>
           <p style={{ fontFamily: "var(--font-serif)", fontWeight: 300, color: "white", textShadow: "0 2px 20px rgba(0,0,0,0.4)", fontSize: "clamp(2.5rem, 5vw, 5rem)" }}>MYTHOLOGY</p>
@@ -808,7 +808,7 @@ function GothicSection({ onAddToCart }: { onAddToCart: (p: Product) => void }) {
 
       {/* Banner */}
       <div className="reveal" style={{ position: "relative", height: "min(50vw, 70vh)", minHeight: "260px", marginBottom: "4rem", transitionDelay: "0.1s" }}>
-        <Image src={col.banner} alt="Gothic Collection — JEWL" fill style={{ objectFit: "cover", objectPosition: "center top" }} />
+        <Image src={col.banner} alt="Gothic Collection — Freyora Jewel" fill style={{ objectFit: "cover", objectPosition: "center top" }} />
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(12,12,12,0.75) 0%, transparent 60%)" }} />
         <div style={{ position: "absolute", bottom: "2rem", left: "clamp(2rem, 4vw, 4rem)" }}>
           <p style={{ fontFamily: "var(--font-serif)", fontWeight: 300, color: "white", fontSize: "clamp(2.5rem, 5vw, 5rem)" }}>GOTHIC</p>
@@ -896,7 +896,7 @@ function CultureSection({ onAddToCart }: { onAddToCart: (p: Product) => void }) 
 
       {/* Banner */}
       <div className="reveal" style={{ position: "relative", height: "min(50vw, 70vh)", minHeight: "260px", marginBottom: "4rem", transitionDelay: "0.1s" }}>
-        <Image src={col.banner} alt="Culture Collection — JEWL" fill style={{ objectFit: "cover", objectPosition: "center" }} />
+        <Image src={col.banner} alt="Culture Collection — Freyora Jewel" fill style={{ objectFit: "cover", objectPosition: "center" }} />
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(245,239,228,0.55) 0%, transparent 60%)" }} />
         <div style={{ position: "absolute", bottom: "2rem", left: "clamp(2rem, 4vw, 4rem)" }}>
           <p style={{ fontFamily: "var(--font-serif)", fontWeight: 300, color: "var(--color-ink)", fontSize: "clamp(2.5rem, 5vw, 5rem)", textShadow: "0 1px 10px rgba(245,239,228,0.5)" }}>CULTURE</p>
@@ -1052,10 +1052,9 @@ function Contact() {
   };
 
   const contactInfo = [
-    { Icon: Mail, label: "Email", value: "hello@jewl.in" },
-    { Icon: Phone, label: "Phone", value: "+91 98765 43210" },
-    { Icon: Camera, label: "Instagram", value: "@jewl.in" },
-    { Icon: MapPin, label: "Studio", value: "New Delhi, India" },
+    { Icon: Mail, label: "Email", value: "tejasvsoni6011@gmail.com" },
+    { Icon: Phone, label: "Phone", value: "8824077380" },
+    { Icon: MapPin, label: "Studio", value: "Jaipur, Rajasthan" },
   ];
 
   return (
@@ -1169,7 +1168,7 @@ function Footer() {
         <div style={{ display: "grid", gap: "3rem" }} className="footer-grid">
           {/* Brand */}
           <div className="footer-brand">
-            <p style={{ fontFamily: "var(--font-serif)", fontSize: "2rem", fontWeight: 300, letterSpacing: "0.15em", marginBottom: "1rem" }}>JEWL</p>
+            <p style={{ fontFamily: "var(--font-serif)", fontSize: "2rem", fontWeight: 300, letterSpacing: "0.15em", marginBottom: "1rem", textTransform: "lowercase" }}>freyorajewel</p>
             <p style={{ fontFamily: "var(--font-sans)", fontSize: "0.875rem", color: "rgba(255,255,255,0.45)", lineHeight: 1.7, maxWidth: "280px" }}>
               Real gold and silver jewelry for a new generation. Inspired by mythology, gothic culture, and modern identity.
             </p>
@@ -1177,7 +1176,7 @@ function Footer() {
               {[
                 { Icon: Camera, label: "Instagram", href: "https://instagram.com" },
                 { Icon: Tv, label: "YouTube", href: "https://youtube.com" },
-                { Icon: Mail, label: "Email", href: "mailto:hello@jewl.in" },
+                { Icon: Mail, label: "Email", href: "mailto:tejasvsoni6011@gmail.com" },
               ].map(({ Icon, label, href }) => (
                 <a
                   key={label} href={href} aria-label={label}
@@ -1263,7 +1262,7 @@ function Footer() {
           {subscribed ? (
             <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", color: "var(--color-gold)" }}>
               <Check size={16} />
-              <span style={{ fontFamily: "var(--font-sans)", fontSize: "0.875rem" }}>You&apos;re subscribed. Welcome to JEWL.</span>
+              <span style={{ fontFamily: "var(--font-sans)", fontSize: "0.875rem" }}>You&apos;re subscribed. Welcome to Freyora Jewel.</span>
             </div>
           ) : (
             <form onSubmit={handleSubscribe} style={{ display: "flex", maxWidth: "400px" }}>
@@ -1296,7 +1295,7 @@ function Footer() {
       <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}>
         <div className="container-editorial" style={{ paddingTop: "1.5rem", paddingBottom: "1.5rem", display: "flex", flexWrap: "wrap", justifyContent: "space-between", gap: "0.5rem" }}>
           <p style={{ fontFamily: "var(--font-sans)", fontSize: "0.7rem", color: "rgba(255,255,255,0.25)" }}>
-            © 2026 JEWL. All rights reserved. Made in India.
+            © 2026 Freyora Jewel. All rights reserved. Made in India.
           </p>
           <p style={{ fontFamily: "var(--font-sans)", fontSize: "0.7rem", color: "rgba(255,255,255,0.25)" }}>
             18K Gold · 925 Sterling Silver · Real. Always.
