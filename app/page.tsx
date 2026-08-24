@@ -1236,15 +1236,22 @@ function Footer() {
           <div>
             <p style={{ fontFamily: "var(--font-sans)", fontSize: "0.65rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--color-gold)", marginBottom: "1.5rem" }}>Customer</p>
             <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-              {["Shipping", "Returns", "Care Guide", "FAQs"].map((item) => (
-                <li key={item}>
-                  <button
-                    style={{ fontFamily: "var(--font-sans)", fontSize: "0.875rem", color: "rgba(255,255,255,0.45)", background: "none", border: "none", cursor: "pointer", transition: "color 300ms", padding: 0 }}
+              {[
+                { label: "Shipping", href: "/policies#order-process" },
+                { label: "Returns", href: "/policies#returns-cancellation" },
+                { label: "Care Guide", href: "/policies#care" },
+                { label: "Policies", href: "/policies" },
+                { label: "FAQs", href: "/policies#faq" }
+              ].map((item) => (
+                <li key={item.label}>
+                  <a
+                    href={item.href}
+                    style={{ fontFamily: "var(--font-sans)", fontSize: "0.875rem", color: "rgba(255,255,255,0.45)", textDecoration: "none", transition: "color 300ms", padding: 0 }}
                     onMouseEnter={(e) => ((e.target as HTMLElement).style.color = "white")}
                     onMouseLeave={(e) => ((e.target as HTMLElement).style.color = "rgba(255,255,255,0.45)")}
                   >
-                    {item}
-                  </button>
+                    {item.label}
+                  </a>
                 </li>
               ))}
             </ul>
