@@ -4,9 +4,11 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   ArrowLeft, Plus, Edit2, Trash2, Save, X,
-  Star, Tag, Package, ShoppingBag, LayoutGrid, Eye
+  Star, Tag, Package, ShoppingBag, LayoutGrid, Eye, Upload
 } from "lucide-react";
 import type { Product } from "../../data/products";
+import { storage } from "../../lib/firebase";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 // ─── Constants ────────────────────────────────────────────────
 const COLLECTIONS = ["mythology", "gothic", "culture"] as const;
@@ -89,7 +91,38 @@ function EditModal({
   saving: boolean;
 }) {
   const [form, setForm] = useState<Partial<Product>>(product);
+  const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+
   const set = (key: keyof Product, value: unknown) => setForm(prev => ({ ...prev, [key]: value }));
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    const storageRef = ref(storage, `products/${Date.now()}_${file.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setUploadProgress(progress);
+      },
+      (error) => {
+        console.error("Upload failed", error);
+        alert("Image upload failed. Please try again.");
+        setUploading(false);
+      },
+      async () => {
+        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+        set("image", downloadURL);
+        setUploading(false);
+        setUploadProgress(0);
+      }
+    );
+  };
 
   const handleSave = () => {
     if (!form.name?.trim()) { alert("Product name is required."); return; }
@@ -127,11 +160,35 @@ function EditModal({
             <div style={{ width: "100%", height: "220px", overflow: "hidden", background: "var(--color-cream)", position: "relative" }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={form.image} alt="Preview" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              {uploading && (
+                <div style={{ position: "absolute", inset: 0, background: "rgba(250,247,242,0.8)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "0.5rem" }}>
+                  <div style={{ width: "40%", height: "4px", background: "rgba(26,26,26,0.1)", borderRadius: "2px", overflow: "hidden" }}>
+                    <div style={{ width: `${uploadProgress}%`, height: "100%", background: "var(--color-gold)", transition: "width 200ms" }} />
+                  </div>
+                  <p style={{ fontFamily: "var(--font-sans)", fontSize: "0.75rem", color: "var(--color-ink)", fontWeight: 500 }}>Uploading... {Math.round(uploadProgress)}%</p>
+                </div>
+              )}
             </div>
           )}
 
-          <Field label="Image URL">
-            <input style={inputStyle} type="text" value={form.image || ""} onChange={e => set("image", e.target.value)} placeholder="/assets/products/your-image.jpg" />
+          <Field label="Product Image">
+            <div style={{ display: "flex", gap: "1rem" }}>
+              <input 
+                style={{ ...inputStyle, flex: 1, color: "var(--color-ink-muted)", cursor: "pointer" }} 
+                type="file" 
+                accept="image/*" 
+                onChange={handleImageUpload}
+                disabled={uploading}
+              />
+              <input 
+                style={{ ...inputStyle, flex: 1 }} 
+                type="text" 
+                value={form.image || ""} 
+                onChange={e => set("image", e.target.value)} 
+                placeholder="Or paste image URL" 
+                disabled={uploading}
+              />
+            </div>
           </Field>
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
