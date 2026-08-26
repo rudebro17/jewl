@@ -13,7 +13,7 @@ import {
 } from "../data/products";
 
 // ─── SCROLL REVEAL ───────────────────────────────────────────
-function useScrollReveal() {
+function useScrollReveal(dependency?: any) {
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -26,7 +26,7 @@ function useScrollReveal() {
     const els = document.querySelectorAll(".reveal");
     els.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
-  }, []);
+  }, [dependency]);
 }
 
 // ─── TYPES ────────────────────────────────────────────────────
@@ -191,18 +191,7 @@ function Navbar({ cartCount, onCartClick }: { cartCount: number; onCartClick: ()
         </div>
       </div>
 
-      <style jsx>{`
-        @media (min-width: 1024px) {
-          .hide-mobile-nav { display: flex !important; }
-          .mobile-menu-btn { display: none !important; }
-          .desktop-search { display: flex !important; }
-          .mobile-overlay { display: none !important; }
-        }
-        @media (max-width: 1023px) {
-          .hide-mobile-nav { display: none !important; }
-          .desktop-search { display: none !important; }
-        }
-      `}</style>
+      
     </>
   );
 }
@@ -411,19 +400,7 @@ function Hero() {
         </div>
       </div>
 
-      <style jsx>{`
-        .hero-grid { grid-template-columns: 1fr; }
-        .hero-img-wrap { aspect-ratio: 4/3; }
-        .floating-tag { display: none; }
-        .marquee-strip { display: none; }
-        @media (min-width: 1024px) {
-          .hero-grid { grid-template-columns: 1fr 1fr; }
-          .hero-img-wrap { aspect-ratio: 3/4; height: 85vh; }
-          .floating-tag { display: flex; }
-          .marquee-strip { display: block; }
-          .hero-text { padding-right: 4rem; }
-        }
-      `}</style>
+      
     </section>
   );
 }
@@ -495,14 +472,7 @@ function BrandPhilosophy() {
         </div>
       </div>
 
-      <style jsx>{`
-        .philosophy-grid { grid-template-columns: 1fr; }
-        .philosophy-img { order: 2; }
-        @media (min-width: 1024px) {
-          .philosophy-grid { grid-template-columns: 1fr 1fr; gap: 6rem; }
-          .philosophy-img { order: 1; }
-        }
-      `}</style>
+      
     </section>
   );
 }
@@ -698,10 +668,7 @@ function CollectionsOverview() {
         </div>
       </div>
 
-      <style jsx>{`
-        .collections-grid { grid-template-columns: 1fr; }
-        @media (min-width: 768px) { .collections-grid { grid-template-columns: repeat(3, 1fr); } }
-      `}</style>
+      
     </section>
   );
 }
@@ -760,16 +727,7 @@ function MythologySection({ onAddToCart, allProducts }: { onAddToCart: (p: Produ
         </div>
       </div>
 
-      <style jsx>{`
-        .section-header-grid { grid-template-columns: 1fr; }
-        .section-header-right { text-align: left; }
-        .products-grid { grid-template-columns: repeat(2, 1fr); }
-        @media (min-width: 1024px) {
-          .section-header-grid { grid-template-columns: 1fr 1fr; }
-          .section-header-right { text-align: right; }
-          .products-grid { grid-template-columns: repeat(3, 1fr); gap: 2.5rem; }
-        }
-      `}</style>
+      
     </section>
   );
 }
@@ -850,16 +808,7 @@ function GothicSection({ onAddToCart, allProducts }: { onAddToCart: (p: Product)
         </div>
       </div>
 
-      <style jsx>{`
-        .section-header-grid { grid-template-columns: 1fr; }
-        .section-header-right { text-align: left; }
-        .products-grid { grid-template-columns: repeat(2, 1fr); }
-        @media (min-width: 1024px) {
-          .section-header-grid { grid-template-columns: 1fr 1fr; }
-          .section-header-right { text-align: right; }
-          .products-grid { grid-template-columns: repeat(3, 1fr); gap: 2.5rem; }
-        }
-      `}</style>
+      
     </section>
   );
 }
@@ -918,16 +867,7 @@ function CultureSection({ onAddToCart, allProducts }: { onAddToCart: (p: Product
         </div>
       </div>
 
-      <style jsx>{`
-        .section-header-grid { grid-template-columns: 1fr; }
-        .section-header-right { text-align: left; }
-        .products-grid { grid-template-columns: repeat(2, 1fr); }
-        @media (min-width: 1024px) {
-          .section-header-grid { grid-template-columns: 1fr 1fr; }
-          .section-header-right { text-align: right; }
-          .products-grid { grid-template-columns: repeat(3, 1fr); gap: 2.5rem; }
-        }
-      `}</style>
+      
     </section>
   );
 }
@@ -968,13 +908,7 @@ function FeaturedProducts({ onAddToCart, allProducts }: { onAddToCart: (p: Produ
         </div>
       </div>
 
-      <style jsx>{`
-        .featured-grid { grid-template-columns: repeat(2, 1fr); }
-        @media (min-width: 1024px) {
-          .featured-grid { grid-template-columns: repeat(4, 1fr); gap: 2rem; }
-          .featured-hero { grid-column: span 2; }
-        }
-      `}</style>
+      
     </section>
   );
 }
@@ -1142,10 +1076,7 @@ function Contact() {
         </div>
       </div>
 
-      <style jsx>{`
-        .contact-grid { grid-template-columns: 1fr; }
-        @media (min-width: 1024px) { .contact-grid { grid-template-columns: 1fr 1fr; gap: 6rem; } }
-      `}</style>
+      
     </section>
   );
 }
@@ -1312,16 +1243,7 @@ function Footer() {
         </div>
       </div>
 
-      <style jsx>{`
-        .footer-grid { grid-template-columns: 1fr 1fr; }
-        .footer-brand { grid-column: span 2; }
-        .newsletter-grid { grid-template-columns: 1fr; }
-        @media (min-width: 1024px) {
-          .footer-grid { grid-template-columns: 2fr 1fr 1fr 1fr; }
-          .footer-brand { grid-column: span 1; }
-          .newsletter-grid { grid-template-columns: 1fr 1fr; align-items: center; }
-        }
-      `}</style>
+      
     </footer>
   );
 }
@@ -1330,10 +1252,11 @@ function Footer() {
 // PAGE
 // ═══════════════════════════════════════════════════════════════
 export default function HomePage() {
-  useScrollReveal();
+  // useScrollReveal is called below
 
   const [productsData, setProductsData] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  useScrollReveal(loading);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
 
