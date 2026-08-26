@@ -13,7 +13,7 @@ import {
 } from "../data/products";
 
 // ─── SCROLL REVEAL ───────────────────────────────────────────
-function useScrollReveal() {
+function useScrollReveal(dependency?: any) {
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -26,7 +26,7 @@ function useScrollReveal() {
     const els = document.querySelectorAll(".reveal");
     els.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
-  }, []);
+  }, [dependency]);
 }
 
 // ─── TYPES ────────────────────────────────────────────────────
@@ -191,18 +191,7 @@ function Navbar({ cartCount, onCartClick }: { cartCount: number; onCartClick: ()
         </div>
       </div>
 
-      <style jsx>{`
-        @media (min-width: 1024px) {
-          .hide-mobile-nav { display: flex !important; }
-          .mobile-menu-btn { display: none !important; }
-          .desktop-search { display: flex !important; }
-          .mobile-overlay { display: none !important; }
-        }
-        @media (max-width: 1023px) {
-          .hide-mobile-nav { display: none !important; }
-          .desktop-search { display: none !important; }
-        }
-      `}</style>
+      
     </>
   );
 }
@@ -411,19 +400,7 @@ function Hero() {
         </div>
       </div>
 
-      <style jsx>{`
-        .hero-grid { grid-template-columns: 1fr; }
-        .hero-img-wrap { aspect-ratio: 4/3; }
-        .floating-tag { display: none; }
-        .marquee-strip { display: none; }
-        @media (min-width: 1024px) {
-          .hero-grid { grid-template-columns: 1fr 1fr; }
-          .hero-img-wrap { aspect-ratio: 3/4; height: 85vh; }
-          .floating-tag { display: flex; }
-          .marquee-strip { display: block; }
-          .hero-text { padding-right: 4rem; }
-        }
-      `}</style>
+      
     </section>
   );
 }
@@ -495,14 +472,7 @@ function BrandPhilosophy() {
         </div>
       </div>
 
-      <style jsx>{`
-        .philosophy-grid { grid-template-columns: 1fr; }
-        .philosophy-img { order: 2; }
-        @media (min-width: 1024px) {
-          .philosophy-grid { grid-template-columns: 1fr 1fr; gap: 6rem; }
-          .philosophy-img { order: 1; }
-        }
-      `}</style>
+      
     </section>
   );
 }
@@ -698,10 +668,7 @@ function CollectionsOverview() {
         </div>
       </div>
 
-      <style jsx>{`
-        .collections-grid { grid-template-columns: 1fr; }
-        @media (min-width: 768px) { .collections-grid { grid-template-columns: repeat(3, 1fr); } }
-      `}</style>
+      
     </section>
   );
 }
@@ -709,9 +676,9 @@ function CollectionsOverview() {
 // ═══════════════════════════════════════════════════════════════
 // MYTHOLOGY SECTION
 // ═══════════════════════════════════════════════════════════════
-function MythologySection({ onAddToCart }: { onAddToCart: (p: Product) => void }) {
+function MythologySection({ onAddToCart, allProducts }: { onAddToCart: (p: Product) => void, allProducts: Product[] }) {
   const col = collections[0];
-  const prods = getProductsByCollection("mythology");
+  const prods = allProducts.filter(p => p.collection === "mythology");
 
   return (
     <section id="mythology" style={{ background: "var(--color-ivory)", overflow: "hidden" }} className="section-pad">
@@ -760,16 +727,7 @@ function MythologySection({ onAddToCart }: { onAddToCart: (p: Product) => void }
         </div>
       </div>
 
-      <style jsx>{`
-        .section-header-grid { grid-template-columns: 1fr; }
-        .section-header-right { text-align: left; }
-        .products-grid { grid-template-columns: repeat(2, 1fr); }
-        @media (min-width: 1024px) {
-          .section-header-grid { grid-template-columns: 1fr 1fr; }
-          .section-header-right { text-align: right; }
-          .products-grid { grid-template-columns: repeat(3, 1fr); gap: 2.5rem; }
-        }
-      `}</style>
+      
     </section>
   );
 }
@@ -777,9 +735,9 @@ function MythologySection({ onAddToCart }: { onAddToCart: (p: Product) => void }
 // ═══════════════════════════════════════════════════════════════
 // GOTHIC SECTION
 // ═══════════════════════════════════════════════════════════════
-function GothicSection({ onAddToCart }: { onAddToCart: (p: Product) => void }) {
+function GothicSection({ onAddToCart, allProducts }: { onAddToCart: (p: Product) => void, allProducts: Product[] }) {
   const col = collections[1];
-  const prods = getProductsByCollection("gothic");
+  const prods = allProducts.filter(p => p.collection === "gothic");
 
   return (
     <section id="gothic" style={{ background: "var(--color-gothic-bg)", overflow: "hidden" }} className="section-pad">
@@ -850,16 +808,7 @@ function GothicSection({ onAddToCart }: { onAddToCart: (p: Product) => void }) {
         </div>
       </div>
 
-      <style jsx>{`
-        .section-header-grid { grid-template-columns: 1fr; }
-        .section-header-right { text-align: left; }
-        .products-grid { grid-template-columns: repeat(2, 1fr); }
-        @media (min-width: 1024px) {
-          .section-header-grid { grid-template-columns: 1fr 1fr; }
-          .section-header-right { text-align: right; }
-          .products-grid { grid-template-columns: repeat(3, 1fr); gap: 2.5rem; }
-        }
-      `}</style>
+      
     </section>
   );
 }
@@ -867,9 +816,9 @@ function GothicSection({ onAddToCart }: { onAddToCart: (p: Product) => void }) {
 // ═══════════════════════════════════════════════════════════════
 // CULTURE SECTION
 // ═══════════════════════════════════════════════════════════════
-function CultureSection({ onAddToCart }: { onAddToCart: (p: Product) => void }) {
+function CultureSection({ onAddToCart, allProducts }: { onAddToCart: (p: Product) => void, allProducts: Product[] }) {
   const col = collections[2];
-  const prods = getProductsByCollection("culture");
+  const prods = allProducts.filter(p => p.collection === "culture");
 
   return (
     <section id="culture" style={{ background: "var(--color-cream)", overflow: "hidden" }} className="section-pad">
@@ -918,16 +867,7 @@ function CultureSection({ onAddToCart }: { onAddToCart: (p: Product) => void }) 
         </div>
       </div>
 
-      <style jsx>{`
-        .section-header-grid { grid-template-columns: 1fr; }
-        .section-header-right { text-align: left; }
-        .products-grid { grid-template-columns: repeat(2, 1fr); }
-        @media (min-width: 1024px) {
-          .section-header-grid { grid-template-columns: 1fr 1fr; }
-          .section-header-right { text-align: right; }
-          .products-grid { grid-template-columns: repeat(3, 1fr); gap: 2.5rem; }
-        }
-      `}</style>
+      
     </section>
   );
 }
@@ -935,7 +875,9 @@ function CultureSection({ onAddToCart }: { onAddToCart: (p: Product) => void }) 
 // ═══════════════════════════════════════════════════════════════
 // FEATURED PRODUCTS
 // ═══════════════════════════════════════════════════════════════
-function FeaturedProducts({ onAddToCart }: { onAddToCart: (p: Product) => void }) {
+function FeaturedProducts({ onAddToCart, allProducts }: { onAddToCart: (p: Product) => void, allProducts: Product[] }) {
+  const featured = allProducts.filter(p => p.isFeatured);
+  
   return (
     <section id="featured" style={{ background: "var(--color-ivory)", overflow: "hidden" }} className="section-pad">
       <div className="container-editorial">
@@ -954,7 +896,7 @@ function FeaturedProducts({ onAddToCart }: { onAddToCart: (p: Product) => void }
         </div>
 
         <div style={{ display: "grid", gap: "1.5rem" }} className="featured-grid">
-          {featuredProducts.slice(0, 6).map((product, i) => (
+          {featured.slice(0, 6).map((product, i) => (
             <div
               key={product.id}
               className={`reveal ${i === 0 ? "featured-hero" : ""}`}
@@ -966,13 +908,7 @@ function FeaturedProducts({ onAddToCart }: { onAddToCart: (p: Product) => void }
         </div>
       </div>
 
-      <style jsx>{`
-        .featured-grid { grid-template-columns: repeat(2, 1fr); }
-        @media (min-width: 1024px) {
-          .featured-grid { grid-template-columns: repeat(4, 1fr); gap: 2rem; }
-          .featured-hero { grid-column: span 2; }
-        }
-      `}</style>
+      
     </section>
   );
 }
@@ -1140,10 +1076,7 @@ function Contact() {
         </div>
       </div>
 
-      <style jsx>{`
-        .contact-grid { grid-template-columns: 1fr; }
-        @media (min-width: 1024px) { .contact-grid { grid-template-columns: 1fr 1fr; gap: 6rem; } }
-      `}</style>
+      
     </section>
   );
 }
@@ -1310,16 +1243,7 @@ function Footer() {
         </div>
       </div>
 
-      <style jsx>{`
-        .footer-grid { grid-template-columns: 1fr 1fr; }
-        .footer-brand { grid-column: span 2; }
-        .newsletter-grid { grid-template-columns: 1fr; }
-        @media (min-width: 1024px) {
-          .footer-grid { grid-template-columns: 2fr 1fr 1fr 1fr; }
-          .footer-brand { grid-column: span 1; }
-          .newsletter-grid { grid-template-columns: 1fr 1fr; align-items: center; }
-        }
-      `}</style>
+      
     </footer>
   );
 }
@@ -1328,10 +1252,27 @@ function Footer() {
 // PAGE
 // ═══════════════════════════════════════════════════════════════
 export default function HomePage() {
-  useScrollReveal();
+  // useScrollReveal is called below
 
+  const [productsData, setProductsData] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  useScrollReveal(loading);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/products")
+      .then(res => res.json())
+      .then(data => {
+        setProductsData(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error("Failed to load products", err);
+        setProductsData(products); // fallback to local
+        setLoading(false);
+      });
+  }, []);
 
   const addToCart = useCallback((product: Product) => {
     setCart((prev) => {
@@ -1345,6 +1286,10 @@ export default function HomePage() {
   const removeFromCart = useCallback((id: string) => setCart((prev) => prev.filter((i) => i.id !== id)), []);
   const cartCount = cart.reduce((s, i) => s + i.qty, 0);
 
+  if (loading) {
+    return <div style={{ height: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--color-ivory)", fontFamily: "var(--font-sans)" }}>Loading Freyora Jewel...</div>;
+  }
+
   return (
     <main>
       <Navbar cartCount={cartCount} onCartClick={() => setCartOpen(true)} />
@@ -1352,10 +1297,10 @@ export default function HomePage() {
       <Hero />
       <BrandPhilosophy />
       <CollectionsOverview />
-      <MythologySection onAddToCart={addToCart} />
-      <GothicSection onAddToCart={addToCart} />
-      <CultureSection onAddToCart={addToCart} />
-      <FeaturedProducts onAddToCart={addToCart} />
+      <MythologySection onAddToCart={addToCart} allProducts={productsData} />
+      <GothicSection onAddToCart={addToCart} allProducts={productsData} />
+      <CultureSection onAddToCart={addToCart} allProducts={productsData} />
+      <FeaturedProducts onAddToCart={addToCart} allProducts={productsData} />
       <BrandStatement />
       <Contact />
       <Footer />

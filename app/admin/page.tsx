@@ -4,9 +4,11 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   ArrowLeft, Plus, Edit2, Trash2, Save, X,
-  Star, Tag, Package, ShoppingBag, LayoutGrid, Eye
+  Star, Tag, Package, ShoppingBag, LayoutGrid, Eye, Upload
 } from "lucide-react";
 import type { Product } from "../../data/products";
+import { storage } from "../../lib/firebase";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 // ─── Constants ────────────────────────────────────────────────
 const COLLECTIONS = ["mythology", "gothic", "culture"] as const;
@@ -89,7 +91,38 @@ function EditModal({
   saving: boolean;
 }) {
   const [form, setForm] = useState<Partial<Product>>(product);
+  const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+
   const set = (key: keyof Product, value: unknown) => setForm(prev => ({ ...prev, [key]: value }));
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    const storageRef = ref(storage, `products/${Date.now()}_${file.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setUploadProgress(progress);
+      },
+      (error) => {
+        console.error("Upload failed", error);
+        alert("Image upload failed. Please try again.");
+        setUploading(false);
+      },
+      async () => {
+        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+        set("image", downloadURL);
+        setUploading(false);
+        setUploadProgress(0);
+      }
+    );
+  };
 
   const handleSave = () => {
     if (!form.name?.trim()) { alert("Product name is required."); return; }
@@ -127,11 +160,35 @@ function EditModal({
             <div style={{ width: "100%", height: "220px", overflow: "hidden", background: "var(--color-cream)", position: "relative" }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={form.image} alt="Preview" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              {uploading && (
+                <div style={{ position: "absolute", inset: 0, background: "rgba(250,247,242,0.8)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "0.5rem" }}>
+                  <div style={{ width: "40%", height: "4px", background: "rgba(26,26,26,0.1)", borderRadius: "2px", overflow: "hidden" }}>
+                    <div style={{ width: `${uploadProgress}%`, height: "100%", background: "var(--color-gold)", transition: "width 200ms" }} />
+                  </div>
+                  <p style={{ fontFamily: "var(--font-sans)", fontSize: "0.75rem", color: "var(--color-ink)", fontWeight: 500 }}>Uploading... {Math.round(uploadProgress)}%</p>
+                </div>
+              )}
             </div>
           )}
 
-          <Field label="Image URL">
-            <input style={inputStyle} type="text" value={form.image || ""} onChange={e => set("image", e.target.value)} placeholder="/assets/products/your-image.jpg" />
+          <Field label="Product Image">
+            <div style={{ display: "flex", gap: "1rem" }}>
+              <input 
+                style={{ ...inputStyle, flex: 1, color: "var(--color-ink-muted)", cursor: "pointer" }} 
+                type="file" 
+                accept="image/*" 
+                onChange={handleImageUpload}
+                disabled={uploading}
+              />
+              <input 
+                style={{ ...inputStyle, flex: 1 }} 
+                type="text" 
+                value={form.image || ""} 
+                onChange={e => set("image", e.target.value)} 
+                placeholder="Or paste image URL" 
+                disabled={uploading}
+              />
+            </div>
           </Field>
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
@@ -279,6 +336,11 @@ function EditModal({
 
 // ─── Main Admin Page ───────────────────────────────────────────
 export default function AdminPage() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [authError, setAuthError] = useState("");
+
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -348,6 +410,71 @@ export default function AdminPage() {
     onSale: products.filter(p => p.tag === "Sale").length,
     featured: products.filter(p => p.isFeatured).length,
   };
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (
+      username === process.env.NEXT_PUBLIC_ADMIN_USERNAME &&
+      password === process.env.NEXT_PUBLIC_ADMIN_PASSWORD
+    ) {
+      setIsAuthenticated(true);
+      setAuthError("");
+    } else {
+      setAuthError("Invalid credentials");
+    }
+  };
+
+  if (!isAuthenticated) {
+    return (
+      <div style={{ minHeight: "100vh", background: "var(--color-ivory)", display: "flex", alignItems: "center", justifyContent: "center", padding: "1rem" }}>
+        <div style={{ width: "100%", maxWidth: "400px", background: "white", padding: "3rem 2rem", border: "1px solid rgba(26,26,26,0.1)", textAlign: "center" }}>
+          <h1 style={{ fontFamily: "var(--font-serif)", fontSize: "2rem", color: "var(--color-ink)", marginBottom: "0.5rem" }}>Admin Portal</h1>
+          <p style={{ fontFamily: "var(--font-sans)", fontSize: "0.875rem", color: "var(--color-ink-muted)", marginBottom: "2rem" }}>Enter your credentials to continue</p>
+          
+          <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: "1rem", textAlign: "left" }}>
+            <Field label="Username">
+              <input 
+                type="text" 
+                style={inputStyle} 
+                value={username} 
+                onChange={e => setUsername(e.target.value)} 
+                required 
+              />
+            </Field>
+            <Field label="Password">
+              <input 
+                type="password" 
+                style={inputStyle} 
+                value={password} 
+                onChange={e => setPassword(e.target.value)} 
+                required 
+              />
+            </Field>
+            {authError && <p style={{ color: "#b91c1c", fontSize: "0.75rem", fontFamily: "var(--font-sans)", margin: 0 }}>{authError}</p>}
+            <button 
+              type="submit" 
+              style={{
+                marginTop: "1rem", padding: "0.875rem", background: "var(--color-ink)", color: "white",
+                border: "none", cursor: "pointer", fontFamily: "var(--font-sans)", fontSize: "0.875rem",
+                letterSpacing: "0.08em", textTransform: "uppercase", transition: "opacity 200ms"
+              }}
+            >
+              Sign In
+            </button>
+          </form>
+          <div style={{ marginTop: "2rem" }}>
+            <Link href="/" style={{ color: "var(--color-ink-muted)", fontSize: "0.875rem", textDecoration: "none", borderBottom: "1px solid currentColor" }}>
+              Return to Store
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (loading) {
+    return <div style={{ minHeight: "100vh", background: "var(--color-ivory)", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "var(--font-sans)", color: "var(--color-ink-muted)" }}>Loading Freyora Admin...</div>;
+  }
 
   return (
     <main style={{ background: "#f5f5f3", minHeight: "100vh" }}>
