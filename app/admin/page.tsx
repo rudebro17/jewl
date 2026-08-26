@@ -336,6 +336,11 @@ function EditModal({
 
 // ─── Main Admin Page ───────────────────────────────────────────
 export default function AdminPage() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [authError, setAuthError] = useState("");
+
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -405,6 +410,71 @@ export default function AdminPage() {
     onSale: products.filter(p => p.tag === "Sale").length,
     featured: products.filter(p => p.isFeatured).length,
   };
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (
+      username === process.env.NEXT_PUBLIC_ADMIN_USERNAME &&
+      password === process.env.NEXT_PUBLIC_ADMIN_PASSWORD
+    ) {
+      setIsAuthenticated(true);
+      setAuthError("");
+    } else {
+      setAuthError("Invalid credentials");
+    }
+  };
+
+  if (!isAuthenticated) {
+    return (
+      <div style={{ minHeight: "100vh", background: "var(--color-ivory)", display: "flex", alignItems: "center", justifyContent: "center", padding: "1rem" }}>
+        <div style={{ width: "100%", maxWidth: "400px", background: "white", padding: "3rem 2rem", border: "1px solid rgba(26,26,26,0.1)", textAlign: "center" }}>
+          <h1 style={{ fontFamily: "var(--font-serif)", fontSize: "2rem", color: "var(--color-ink)", marginBottom: "0.5rem" }}>Admin Portal</h1>
+          <p style={{ fontFamily: "var(--font-sans)", fontSize: "0.875rem", color: "var(--color-ink-muted)", marginBottom: "2rem" }}>Enter your credentials to continue</p>
+          
+          <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: "1rem", textAlign: "left" }}>
+            <Field label="Username">
+              <input 
+                type="text" 
+                style={inputStyle} 
+                value={username} 
+                onChange={e => setUsername(e.target.value)} 
+                required 
+              />
+            </Field>
+            <Field label="Password">
+              <input 
+                type="password" 
+                style={inputStyle} 
+                value={password} 
+                onChange={e => setPassword(e.target.value)} 
+                required 
+              />
+            </Field>
+            {authError && <p style={{ color: "#b91c1c", fontSize: "0.75rem", fontFamily: "var(--font-sans)", margin: 0 }}>{authError}</p>}
+            <button 
+              type="submit" 
+              style={{
+                marginTop: "1rem", padding: "0.875rem", background: "var(--color-ink)", color: "white",
+                border: "none", cursor: "pointer", fontFamily: "var(--font-sans)", fontSize: "0.875rem",
+                letterSpacing: "0.08em", textTransform: "uppercase", transition: "opacity 200ms"
+              }}
+            >
+              Sign In
+            </button>
+          </form>
+          <div style={{ marginTop: "2rem" }}>
+            <Link href="/" style={{ color: "var(--color-ink-muted)", fontSize: "0.875rem", textDecoration: "none", borderBottom: "1px solid currentColor" }}>
+              Return to Store
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (loading) {
+    return <div style={{ minHeight: "100vh", background: "var(--color-ivory)", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "var(--font-sans)", color: "var(--color-ink-muted)" }}>Loading Freyora Admin...</div>;
+  }
 
   return (
     <main style={{ background: "#f5f5f3", minHeight: "100vh" }}>
